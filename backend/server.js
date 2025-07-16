@@ -34,6 +34,7 @@ const movieSchema = new mongoose.Schema({
   genre: String
 });
 
+
 const Movie = mongoose.model('Movie', movieSchema);
 
 // const v = Movie.find({adult:false,genre:"Thriller"});
@@ -48,6 +49,12 @@ app.get('/api/movies', async (req, res) => {
   console.log(req.query)
   const {genre} = req.query;
   const movies = await Movie.find({adult:false,genre:genre}).limit(8);
+  res.json(movies).status(200);
+});
+
+app.get('/api/movies/:genre', async (req, res) => {
+  const {genre} = req.params;
+  const movies = await Movie.find({adult:false,genre:genre}).limit(20);
   res.json(movies).status(200);
 });
 

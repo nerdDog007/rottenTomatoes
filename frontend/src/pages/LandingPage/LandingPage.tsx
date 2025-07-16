@@ -1,29 +1,38 @@
-import React, { useEffect, useState } from 'react'
-import NavBar from '../../layouts/NavBar'
-import Header from '../../components/Header.tsx'
-import { useDispatch,useSelector } from 'react-redux'
-import { setMovies,setIsLoading } from '../../redux/Movies/movies'
-import HighLight from '../../components/HighLight.tsx'
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { genreActions, setMovies } from '../../redux/Movies/movies';
+import useGenreMovies from '../../hooks/getMovies';
+import NavBar from '../../layouts/NavBar';
+import Header from '../../components/Header';
+import HighLight from '../../components/HighLight';
+import NowShowing from '../../layouts/NowShowing';
+import MovieList from '../../components/MovieList';
 
 function LandingPage() {
-  const dispatch = useDispatch()
-  useEffect(()=>{
-    fetch('http://localhost:5000/api/movies?genre=Action')
-  .then(res => res.json())
-  .then(data => {
-    dispatch(setMovies(data))
-    dispatch(setIsLoading(false))
-  })
-  .catch(err => console.error(err));
-  },[])
-  return (
-    <div className='lg:w-[80vw] overflow-x-hidden lg:h-[70vh] mx-auto'>
-        <Header />
-        <NavBar />
-        <HighLight/>
+  const dispatch = useDispatch();
+  const { movies: thrillerMovies } = useGenreMovies('Thriller');
+  const { movies: RomanceMovies } = useGenreMovies('Romance');
+  const { movies: actionMovies } = useGenreMovies('Action');
 
+  useEffect(() => {
+    if (thrillerMovies?.length > 0) {
+      dispatch(genreActions.setThriller(thrillerMovies));
+    }
+
+    if (actionMovies?.length > 0) {
+      dispatch(setMovies(actionMovies)); // Featured movies
+    }
+  }, [thrillerMovies, actionMovies, dispatch]);
+
+  return (
+    <div className="lg:w-[60vw] flex flex-col overflow-x-hidden lg:h-fit mx-auto">
+      <Header />
+      <NavBar />
+      <HighLight />
+      <NowShowing />
+      <MovieList movies={thrillerMovies} />
     </div>
-  )
+  );
 }
 
-export default LandingPage
+export default LandingPage;
