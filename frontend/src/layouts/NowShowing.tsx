@@ -7,7 +7,7 @@ function NowShowing() {
     const m =nowShowing()
   return (
     <> 
-         <MovieList movies={m} />
+         <MovieList movies={m} title={"Now Showing"} />
     </>
   )
 }

@@ -1,7 +1,6 @@
 // moviesSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 
-// ✅ Genre list for dynamic state & reducer creation
 const genres = [
   "thriller", "action", "adventure", "animation", "comedy",
   "crime", "documentary", "drama", "family", "fantasy",
@@ -9,21 +8,20 @@ const genres = [
   "sci_fi", "sport", "war", "western"
 ];
 
-// ✅ Initial State
 const initialState = {
   movies: [],
   isLoading: true,
   error: null,
   nowShowing: [],
   imageUrl: "https://image.tmdb.org/t/p/w500/",
+  search:''
 };
 
-// Add empty arrays for each genre
 genres.forEach(genre => {
   initialState[genre] = [];
 });
 
-// ✅ Slice
+
 export const moviesSlice = createSlice({
   name: "moviesHero",
   initialState,
@@ -40,8 +38,10 @@ export const moviesSlice = createSlice({
     setNowShowing: (state, action) => {
       state.nowShowing = action.payload;
     },
+    setSearch: (state, action) => {
+      state.search = action.payload
+    },
 
-    // ✅ Dynamically generate reducers like setAction, setThriller, etc.
     ...Object.fromEntries(
       genres.map(genre => [
         `set${capitalize(genre)}`,
@@ -67,6 +67,7 @@ export const {
   setIsLoading,
   setError,
   setNowShowing,
+  setSearch,
   ...genreActions // You can access dynamically generated ones from here
 } = moviesSlice.actions;
 

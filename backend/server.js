@@ -13,7 +13,7 @@ app.use(cors({
   origin: '*', // Or specify frontend domain like 'http://localhost:3000'
   methods: ['GET', 'POST']
 }));
-
+app.use(express.json()); // ✅ This parses incoming JSON bodies
 const port = process.env.PORT || 5000;
 const uri = process.env.MONGODB_URI;
 
@@ -58,7 +58,47 @@ app.get('/api/movies/:genre', async (req, res) => {
   res.json(movies).status(200);
 });
 
-// ✅ Connect DB, then fetch movies
+const userSchema = new mongoose.Schema({
+  email:{
+    type:String,
+    required:true,
+    unique:true
+  },
+  password:{
+    type:String,
+    required:true
+  
+  },
+  likedMovies:[String],
+  likedGenres:[String],
+  bookmarkedMovies:[String],
+  watchedMovies:[String],
+  watchedGenres:[String]
+});
+
+const User = mongoose.model('User', userSchema);
+
+app.post('/auth/register', async (req, res) => {
+})
+
+app.post('/auth/login', async (req, res) => {
+  const {email,password} = req.body;
+  const user = await User.findOne({email:email});
+  if(user){
+    if(user.password===password){
+      console.log("this")
+      res.status(200).json({ validation:true,email:email,password:password });
+    }
+    else{
+      res.status(400).json({ validation:false,error:'Invalid Email or Password'});
+    }
+  }
+  else if(!user){
+    const newUser = new User({email,password});
+    await newUser.save();
+    res.status(200).json({ validation:true,email:email,password:password });
+  }
+});
 async function startServer() {
   try {
     await mongoose.connect(uri);

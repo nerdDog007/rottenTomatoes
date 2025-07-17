@@ -1,8 +1,8 @@
 import React from 'react'
 
-function Input({type,className,placeholder}) {
+function Input({type,className,placeholder,onChange,value}) {
   return (
-    <input type={type} className={className} placeholder={placeholder}/>
+    <input type={type} value={value} onChange={onChange} className={className} placeholder={placeholder}/>
   )
 }
 

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { CiStar } from "react-icons/ci";
 
-function MovieList({movies}) {
+function MovieList({movies,title}) {
+    if (!movies || movies.length === 0) return <div>Loading...</div>;
     const imageUrl = useSelector(state => state.movies.imageUrl);
     const [currentIndex, setCurrentIndex] = useState(0);
     useEffect(() => {
@@ -18,7 +19,8 @@ function MovieList({movies}) {
     if (!movies || movies.length === 0) return <div>Loading...</div>;
 
   return (
-    <div className='w-full h-[45vh] mt-4 flex gap-4 px-2'>
+    <div className='w-full h-[45vh] mt-4 flex gap-4 px-2 flex-col'>
+        <h1 className='text-center text-[1.5rem] font-bold'>{title} movies</h1>
         <ul className='flex w-full gap-2 overflow-x-scroll'
         >
             {

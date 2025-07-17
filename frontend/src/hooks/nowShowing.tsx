@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useSelector,useDispatch } from 'react-redux';
-import { setNowShowing } from '../redux/Movies/movies';
+import { setNowShowing } from '../redux/slices/movies';
 
 function nowShowing(){
     const dispatch = useDispatch();
