@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+*,*::before,*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+.highLight1{
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  
+}
